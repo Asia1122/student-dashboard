@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
+// app.js
 
-// DashboardPage: 교사용 학생 채점 결과 대시보드
-export default function DashboardPage() {
+// DashboardPage 컴포넌트 정의
+function DashboardPage() {
+  const { useEffect, useState } = React;
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    // TODO: 실제 API 엔드포인트로 수정하세요
-    fetch('/api/students')
+    // TODO: 실제 API 엔드포인트 URL로 변경하세요.
+    fetch('https://your-api-endpoint.amazonaws.com/dev/students')
       .then((res) => res.json())
       .then((data) => setStudents(data))
       .catch((err) => console.error('Error fetching students:', err));
   }, []);
 
-  // 검색 필터링
+  // 이름 검색 필터링
   const filtered = students.filter((s) =>
     s.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -27,9 +28,11 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">학생 채점 결과 대시보드</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">
+        학생 채점 결과 대시보드
+      </h1>
 
-      {/* 통계 카드 영역 */}
+      {/* 통계 카드 */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="p-4 bg-white rounded-2xl shadow">
           <p className="text-sm text-gray-500">총 학생 수</p>
@@ -78,7 +81,10 @@ export default function DashboardPage() {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={3} className="px-6 py-4 text-center text-gray-500">
+                <td
+                  colSpan={3}
+                  className="px-6 py-4 text-center text-gray-500"
+                >
                   검색 결과가 없습니다.
                 </td>
               </tr>
@@ -89,3 +95,6 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+// ReactDOM을 이용해 <DashboardPage />를 #root에 렌더링
+ReactDOM.createRoot(document.getElementById('root')).render(<DashboardPage />);
