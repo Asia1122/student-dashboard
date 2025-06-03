@@ -1,20 +1,19 @@
-// app.js
+// frontend/app.js
 
-// DashboardPage 컴포넌트 정의
 function DashboardPage() {
   const { useEffect, useState } = React;
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    // TODO: 실제 API 엔드포인트 URL로 변경하세요.
-    fetch('https://your-api-endpoint.amazonaws.com/dev/students')
+    // Replit 백엔드 URL에 맞춰서 변경하세요
+    fetch('https://your-replit-subdomain.replit.app/students')
       .then((res) => res.json())
       .then((data) => setStudents(data))
       .catch((err) => console.error('Error fetching students:', err));
   }, []);
 
-  // 이름 검색 필터링
+  // 이름으로 필터링
   const filtered = students.filter((s) =>
     s.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -73,7 +72,7 @@ function DashboardPage() {
           </thead>
           <tbody>
             {filtered.map((s) => (
-              <tr key={s.studentId} className="border-b hover:bg-gray-50">
+              <tr key={s.id} className="border-b hover:bg-gray-50">
                 <td className="px-6 py-4">{s.name}</td>
                 <td className="px-6 py-4">{s.worksheetCode}</td>
                 <td className="px-6 py-4 font-semibold">{s.score}</td>
