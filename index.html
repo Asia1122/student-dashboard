@@ -4,17 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>학생 채점 대시보드</title>
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- React + ReactDOM CDN -->
+
+  <!-- React, ReactDOM CDN (개발용) -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <!-- Babel for JSX in browser -->
+
+  <!-- Babel (브라우저에서 JSX 해석) -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body class="bg-gray-100">
+  <!-- React가 렌더링할 루트 요소 -->
   <div id="root"></div>
-  <!-- 여러분이 작성한 React 컴포넌트 스크립트 -->
+
+  <!-- 방금 만든 app.js 불러오기 (type="text/babel" 필수) -->
   <script type="text/babel" src="app.js"></script>
 </body>
 </html>
