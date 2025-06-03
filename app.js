@@ -7,7 +7,7 @@ function DashboardPage() {
 
   useEffect(() => {
     // Replit 백엔드 URL에 맞춰서 변경하세요
-    fetch('https://68744ad1-8dba-41d6-9c56-4a5aa4062eb2-00-2w8umvmvho639.sisko.replit.dev/server.js')
+    fetch('https://68744ad1-8dba-41d6-9c56-4a5aa4062eb2-00-2w8umvmvho639.sisko.replit.dev/server.js/students')
       .then((res) => res.json())
       .then((data) => setStudents(data))
       .catch((err) => console.error('Error fetching students:', err));
