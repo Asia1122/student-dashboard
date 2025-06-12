@@ -1,167 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>수학 채점 결과 대시보드</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>학생 채점 결과 대시보드</title>
 
-  <!-- Bootstrap & Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- Pretendard + Poppins 폰트 -->
-  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      font-family: 'Pretendard', 'Poppins', sans-serif;
-    }
-    /* 버튼 커스텀 */
-    .lesser-btn-success {
-      background-color: #26BF5F;
-      border-color: #2fb380;
-      color: #fff;
-    }
-    .lesser-btn-danger {
-      background-color: #da292e;
-      border-color: #da292e;
-      color: #fff;
-    }
-    /* 사이드바 */
-    .sidebar {
-      min-height: 100vh;
-      background: #f8f9fa;
-    }
-    .sidebar .nav-link.active {
-      background: #F7F8F9;
-      color: #2A3342;
-      font-weight: 600;
-    }
-    /* 메인 콘텐츠 */
-    .stats-card {
-      border-radius: .5rem;
-      box-shadow: 0 0 10px rgba(0,0,0,.05);
-    }
-    /* 테이블 hover */
-    .table-hover tbody tr:hover {
-      background-color: #F7F8F9;
-    }
-  </style>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- React·ReactDOM CDN -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <!-- Babel (JSX 변환용) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
-<body>
-
-  <!-- 헤더 -->
-  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="/favicon.ico" alt="Logo" width="32" class="me-2">
-        <span class="h5 mb-0">Math Dashboard</span>
-      </a>
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navMenu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-house"></i> Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-bar-chart"></i> Dashboard</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-
-      <!-- 사이드바 -->
-      <nav class="col-md-2 sidebar py-4">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#"><i class="bi bi-speedometer2 me-2"></i>대시보드</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-journal-text me-2"></i>채점 관리</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-gear me-2"></i>설정</a>
-          </li>
-        </ul>
-      </nav>
-
-      <!-- 메인 콘텐츠 -->
-      <main class="col-md-10 py-4">
-
-        <!-- 통계 카드 -->
-        <div class="row g-4 mb-4">
-          <div class="col-sm-4">
-            <div class="p-4 bg-white stats-card text-center">
-              <small class="text-muted">총 학생 수</small>
-              <h2 id="statTotal">0</h2>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="p-4 bg-white stats-card text-center">
-              <small class="text-muted">평균 점수</small>
-              <h2 id="statAvg">0.0</h2>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="p-4 bg-white stats-card text-center">
-              <small class="text-muted">최고 / 최저</small>
-              <h2><span id="statMax">0</span> / <span id="statMin">0</span></h2>
-            </div>
-          </div>
-        </div>
-
-        <!-- 검색 / 필터 바 -->
-        <div class="d-flex align-items-center mb-3">
-          <input type="text" id="searchInput" class="form-control me-2" placeholder="학생 이름 검색...">
-          <select id="worksheetFilter" class="form-select me-2" style="max-width: 200px;">
-            <option value="">모든 학습지</option>
-            <!-- dynamic 옵션 추가 -->
-          </select>
-          <button class="btn btn-outline-secondary" onclick="loadData()">조회</button>
-        </div>
-
-        <!-- 결과 테이블 -->
-        <div class="table-responsive">
-          <table class="table table-hover bg-white">
-            <thead class="table-light">
-              <tr>
-                <th>학생 이름</th>
-                <th>학습지 코드</th>
-                <th>점수</th>
-                <th>상세보기</th>
-              </tr>
-            </thead>
-            <tbody id="studentTable">
-              <tr><td colspan="4" class="text-center text-muted">데이터를 불러오는 중...</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- 상세보기 모달 -->
-  <div class="modal fade" id="detailModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">학생 상세 정보</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <!-- 예: O/X 채점 테이블, AI 조언 등 -->
-          <div id="detailContent">로딩 중…</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS (Popper 포함) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- 본인 app.js / React 등 연결 -->
-  <script src="app.js"></script>
+<body class="bg-gray-100">
+  <div id="root"></div>
+  <!-- 방금 만든 app.js 연결 -->
+  <script type="text/babel" src="app.js"></script>
+</body>
+</html>
